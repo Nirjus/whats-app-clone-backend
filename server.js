@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
 import { app } from "./app.js";
 import http from "http";
-import { frontendUrl, port } from "./secret.js";
+import { backendUrl, frontendUrl, port } from "./secret.js";
 const server = http.createServer(app);
 server.listen(port, () => {
   console.log(`server is running on http://localhost:${port}`);
@@ -81,7 +81,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const url = `https://yourappname.onrender.com/`; // Replace with your Render URL
+const url = backendUrl; // Replace with your Render URL
 const interval = 30000; // Interval in milliseconds (30 seconds)
 function reloadWebsite() {
   fetch(url)
