@@ -20,16 +20,16 @@ io.on("connection", (socket) => {
   socket.on("add-user", (userId) => {
     onlineUsers.set(userId, socket.id);
     socket.broadcast.emit("online-users", {
-      onlineUsers: Array.from(onlineUsers.keys())
-    })
+      onlineUsers: Array.from(onlineUsers.keys()),
+    });
   });
 
   socket.on("signout", (id) => {
     onlineUsers.delete(id);
     socket.broadcast.emit("online-users", {
-      onlineUsers: Array.from(onlineUsers.keys())
-    })
-  })
+      onlineUsers: Array.from(onlineUsers.keys()),
+    });
+  });
 
   socket.on("send-msg", (data) => {
     const sendUserSocket = onlineUsers.get(data.to);
@@ -40,7 +40,6 @@ io.on("connection", (socket) => {
       });
     }
   });
-
 
   socket.on("outgoing-voice-call", (data) => {
     const sendUserSocket = onlineUsers.get(data.to);
@@ -78,7 +77,35 @@ io.on("connection", (socket) => {
 
   socket.on("accept-incoming-call", (id) => {
     const sendUserSocket = onlineUsers.get(id);
-    socket.to(sendUserSocket).emit("accept-call")
-  })
-  
+    socket.to(sendUserSocket).emit("accept-call");
+  });
 });
+
+const url = `https://yourappname.onrender.com/`; // Replace with your Render URL
+const interval = 30000; // Interval in milliseconds (30 seconds)
+function reloadWebsite() {
+  fetch(url)
+    .then((response) => {
+      if (response.ok) {
+        console.log(
+          `Reloaded at ${new Date().toISOString()}: Status Code ${
+            response.status
+          }`
+        );
+      } else {
+        console.error(
+          `Failed to reload at ${new Date().toISOString()}: Status Code ${
+            response.status
+          }`
+        );
+      }
+    })
+    .catch((error) => {
+      console.error(
+        `Error reloading at ${new Date().toISOString()}:`,
+        error.message
+      );
+    });
+}
+
+setInterval(reloadWebsite, interval);
