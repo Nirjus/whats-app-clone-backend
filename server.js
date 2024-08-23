@@ -81,10 +81,15 @@ io.on("connection", (socket) => {
   });
 });
 
-const url = backendUrl; // Replace with your Render URL
+const url = `${backendUrl}/test`; // Replace with your Render URL
 const interval = 30000; // Interval in milliseconds (30 seconds)
 function reloadWebsite() {
-  fetch(url)
+  fetch(url, {
+    method: "GET", // Specifies the HTTP method
+    headers: {
+      "Content-Type": "application/json", // Example of setting headers
+    },
+  })
     .then((response) => {
       if (response.ok) {
         console.log(
